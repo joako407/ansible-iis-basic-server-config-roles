@@ -1,0 +1,5 @@
+---
+
+- name: Ensure Chocolatey Package Manager itself is Installed
+  win_chocolatey:
+    name: chocolatey

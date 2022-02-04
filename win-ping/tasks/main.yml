@@ -1,0 +1,4 @@
+---
+
+- name: Test Win Server
+  win_ping:

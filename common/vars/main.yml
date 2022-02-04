@@ -1,0 +1,8 @@
+iis_features:
+  - Web-Common-Http
+  - Web-HTTP-Logging
+  - Web-Performance
+  - Web-Filtering
+  - Web-CGI
+  - Web-Mgmt-Console
+  - Web-Mgmt-Service

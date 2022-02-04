@@ -1,0 +1,35 @@
+---
+
+- name: Install IIS Web-Server with sub features and management tools
+  ansible.windows.win_feature:
+    #name: Web-Server
+    name: "{{ iis_features }}"
+    state: present
+    include_sub_features: yes
+    include_management_tools: no
+    #include_management_tools: yes
+  register: win_feature
+
+- name: Reboot if installing Web-Server feature requires it
+  ansible.windows.win_reboot:
+  when: win_feature.reboot_required
+
+- name: Install IIS urlrewrite
+  win_chocolatey:
+    name: urlrewrite
+    version: '2.1.20190828'
+    state: present
+
+- name: Configure ReWrite Rules for HTTPS
+  community.windows.win_xml:
+    backup: yes
+    path: C:\Windows\System32\inetsrv\Config\applicationHost.config
+    xpath: //configuration/system.webServer/rewrite/globalRules
+    fragment: '<rule name="HTTPS Redirect" enabled="true" stopProcessing="true">
+                <match url="(.*)" />
+                <conditions>
+                  <add input="{HTTPS}" pattern="^OFF$" />
+                </conditions>
+                <action type="Redirect" url="https://{HTTP_HOST}{REQUEST_URI}" appendQueryString="false" redirectType="Permanent" />
+              </rule>'
+    state: present
