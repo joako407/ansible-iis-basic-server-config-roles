@@ -1,0 +1,26 @@
+---
+
+- name: Ensure PowerShell Core 7.2.1 Installed
+  win_chocolatey:
+    name: powershell-core
+    version: '7.2.1'
+    state: present
+
+- name: Ensure the Win32-OpenSSH service is Present
+  win_chocolatey:
+    name: openssh
+    package_params: /SSHServerFeature
+    state: present
+
+- name: Ensure SSH service is up
+  ansible.windows.win_service:
+    name: sshd
+    state: started
+
+- name: Set the default shell to PowerShell
+  win_regedit:
+    path: HKLM:\SOFTWARE\OpenSSH
+    name: DefaultShell
+    data: 'C:\Program Files\PowerShell\7\pwsh.exe'
+    type: string
+    state: present
