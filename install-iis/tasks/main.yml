@@ -24,12 +24,13 @@
   community.windows.win_xml:
     backup: yes
     path: C:\Windows\System32\inetsrv\Config\applicationHost.config
-    xpath: //configuration/system.webServer/rewrite/globalRules
-    fragment: '<rule name="HTTPS Redirect" enabled="true" stopProcessing="true">
+    xpath: //configuration/system.webServer
+    fragment: '
+              <rewrite><globalRules>
+              <rule name="HTTPS Redirect" enabled="true" stopProcessing="true">
                 <match url="(.*)" />
-                <conditions>
-                  <add input="{HTTPS}" pattern="^OFF$" />
-                </conditions>
+                <conditions><add input="{HTTPS}" pattern="^OFF$" /></conditions>
                 <action type="Redirect" url="https://{HTTP_HOST}{REQUEST_URI}" appendQueryString="false" redirectType="Permanent" />
-              </rule>'
+              </rule></globalRules></rewrite>
+              '
     state: present

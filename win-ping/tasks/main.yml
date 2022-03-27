@@ -1,4 +1,4 @@
 ---
 
-- name: Test Win Server
+- name: Test Win Server Ansible Communication
   win_ping:

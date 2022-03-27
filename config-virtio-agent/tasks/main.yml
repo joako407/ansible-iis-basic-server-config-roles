@@ -1,0 +1,6 @@
+---
+
+- name: Ensure the Virtio drivers is Present
+  win_chocolatey:
+    name: virtio-drivers
+    state: present
